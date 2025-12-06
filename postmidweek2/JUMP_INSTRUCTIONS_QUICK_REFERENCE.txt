@@ -1,0 +1,139 @@
+===============================================
+ASSEMBLY JUMP INSTRUCTIONS - QUICK REFERENCE
+===============================================
+
+1. UNCONDITIONAL JUMP
+----------------------
+JMP label       - Always jumps to the specified label
+                - Does not check any flags
+                - Used to skip code or create loops
+
+
+2. CONDITIONAL JUMPS - EQUALITY
+---------------------------------
+JE  label       - Jump if Equal (ZF = 1)
+JZ  label       - Jump if Zero (same as JE)
+
+JNE label       - Jump if Not Equal (ZF = 0)
+JNZ label       - Jump if Not Zero (same as JNE)
+
+
+3. CONDITIONAL JUMPS - SIGNED COMPARISON
+------------------------------------------
+(For signed numbers: -128 to 127 for bytes)
+
+JG  label       - Jump if Greater (ZF=0 AND SF=OF)
+JNLE label      - Jump if Not Less or Equal (same as JG)
+
+JGE label       - Jump if Greater or Equal (SF=OF)
+JNL label       - Jump if Not Less (same as JGE)
+
+JL  label       - Jump if Less (SF≠OF)
+JNGE label      - Jump if Not Greater or Equal (same as JL)
+
+JLE label       - Jump if Less or Equal (ZF=1 OR SF≠OF)
+JNG label       - Jump if Not Greater (same as JLE)
+
+
+4. CONDITIONAL JUMPS - UNSIGNED COMPARISON
+--------------------------------------------
+(For unsigned numbers: 0 to 255 for bytes)
+
+JA  label       - Jump if Above (CF=0 AND ZF=0)
+JNBE label      - Jump if Not Below or Equal (same as JA)
+
+JAE label       - Jump if Above or Equal (CF=0)
+JNB label       - Jump if Not Below (same as JAE)
+
+JB  label       - Jump if Below (CF=1)
+JNAE label      - Jump if Not Above or Equal (same as JB)
+
+JBE label       - Jump if Below or Equal (CF=1 OR ZF=1)
+JNA label       - Jump if Not Above (same as JBE)
+
+
+5. OTHER CONDITIONAL JUMPS
+----------------------------
+JS  label       - Jump if Sign (SF=1, negative)
+JNS label       - Jump if Not Sign (SF=0, positive/zero)
+
+JO  label       - Jump if Overflow (OF=1)
+JNO label       - Jump if Not Overflow (OF=0)
+
+JP  label       - Jump if Parity (PF=1, even parity)
+JPE label       - Jump if Parity Even (same as JP)
+
+JNP label       - Jump if Not Parity (PF=0, odd parity)
+JPO label       - Jump if Parity Odd (same as JNP)
+
+JC  label       - Jump if Carry (CF=1)
+JNC label       - Jump if Not Carry (CF=0)
+
+
+===============================================
+USAGE PATTERN
+===============================================
+
+CMP operand1, operand2    ; Compare (sets flags)
+Jxx label                 ; Jump based on condition
+
+Example:
+    CMP AL, BL
+    JE EQUAL_LABEL        ; Jump if AL == BL
+    JG GREATER_LABEL      ; Jump if AL > BL (signed)
+    JA ABOVE_LABEL        ; Jump if AL > BL (unsigned)
+
+
+===============================================
+CHOOSING THE RIGHT JUMP
+===============================================
+
+✓ Use JE/JNE for equality checks
+✓ Use JG/JL/JGE/JLE for SIGNED number comparisons
+✓ Use JA/JB/JAE/JBE for UNSIGNED number comparisons
+✓ Use JZ/JNZ after operations (ADD, SUB, AND, OR, etc.)
+✓ Use JMP to skip code or create unconditional loops
+
+
+===============================================
+FLAGS REFERENCE
+===============================================
+
+ZF - Zero Flag          (1 if result = 0)
+SF - Sign Flag          (1 if result is negative)
+CF - Carry Flag         (1 on unsigned overflow)
+OF - Overflow Flag      (1 on signed overflow)
+PF - Parity Flag        (1 if even number of 1 bits)
+
+
+===============================================
+QUICK EXAMPLES
+===============================================
+
+1. Check if equal:
+   CMP AL, 5
+   JE IS_FIVE
+
+2. Check if greater (signed):
+   CMP AL, BL
+   JG FIRST_BIGGER
+
+3. Check if above (unsigned):
+   CMP AL, 100
+   JA OVER_LIMIT
+
+4. Loop counter:
+   INC counter
+   CMP counter, 10
+   JBE LOOP_START
+
+5. Check if zero:
+   CMP AL, 0
+   JE IS_ZERO
+
+6. Skip code:
+   JMP SKIP_SECTION
+   ; code here is skipped
+   SKIP_SECTION:
+
+===============================================
